@@ -1,20 +1,25 @@
-import { StyleSheet, Text, View, Image, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Image, Dimensions, Pressable } from 'react-native';
 import { Themes } from "../assets/Themes";
 import millisToMinutesAndSeconds from '../utils/millisToMinutesAndSeconds';
-
+import { Entypo } from '@expo/vector-icons'; 
+import { useNavigation } from '@react-navigation/native';
 
 const {
     width: SCREEN_WIDTH,
     height: SCREEN_HEIGHT,
 } = Dimensions.get('window');
 
-
-export default function Song({ name, duration_ms, album, artists, track_number, id }) {
+export default function Song({ name, duration_ms, album, artists, preview_url, external_urls, track_number, id }) {
+    const navigation = useNavigation();
     return (
 
-        <View style={styles.track}>
+        <Pressable style={styles.track}
+            onPress={() => navigation.navigate('DetailsScreen', {external_urls:external_urls})}>
             <View style={styles.track_number_box}>
-                <Text style={styles.track_number}>{track_number}</Text>
+                <Pressable style={styles.playButton}
+                    onPress={() => navigation.navigate('PreviewScreen', {preview_url:preview_url})}>
+                    <Entypo name="controller-play" size={SCREEN_WIDTH * 0.03} color="black" />
+                </Pressable>
             </View>
             <View style={styles.album_cover_box}>
                 <Image
@@ -32,7 +37,7 @@ export default function Song({ name, duration_ms, album, artists, track_number, 
             <View style={styles.duration_box}>
                 <Text style={styles.duration}>{millisToMinutesAndSeconds(duration_ms)}</Text>
             </View>
-        </View>
+        </Pressable>
     );
 }
 
@@ -102,5 +107,15 @@ const styles = StyleSheet.create({
         height: '100%',
         resizeMode: 'contain',
         width: '100%'
+    },
+    playButton: {
+        width: SCREEN_WIDTH * 0.04,
+        height: SCREEN_WIDTH * 0.04,
+        backgroundColor: '#1DB954',
+        margin: 3,
+        alignItems: 'center',
+        justifyContent: 'center',
+        borderRadius: 99999
     }
+
 });

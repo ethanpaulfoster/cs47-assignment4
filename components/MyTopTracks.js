@@ -14,6 +14,8 @@ const renderSong = ({ item, index }) => (
     album={item.album}
     track_number={item.track_number}
     artists={item.artists}
+    preview_url={item.preview_url}
+    external_urls={item.external_urls}
   />
 );
 
